@@ -8,9 +8,8 @@ char myArray2[10];
 
 int main()
 {
-    printf("enter your string:");
-
     // Have to use a passed value so when you type something in, then the scanf will store the value in the array. Note that the array is length 10, but c will let you put in as many values as you want
+    printf("enter your string:");
     scanf("%s", myArray);
     printf("Your first array contains: %s\n", myArray);
 
@@ -19,3 +18,5 @@ int main()
     scanf("%10s", myArray2);
     printf("Your second array contains: %s\n", myArray2);
 }
+
+// So now if you enter a 20 digit string, the first block will return the string in its entirety, but the second one will only return the first 10 characters that were typed

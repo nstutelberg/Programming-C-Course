@@ -24,6 +24,7 @@ int main()
 /*
 
 HW #01, Nolan Stutelberg
+
 Enter your input in this order with a space between each value: character integer floating-point-number: C 1111 3.14
 C
 67

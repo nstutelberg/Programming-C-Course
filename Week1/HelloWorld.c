@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 int main()
-
 {
     int suppliedNum = 5;
 
