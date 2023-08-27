@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 int main(void)
 {
     // Testing mathematical operations using floats
@@ -28,4 +30,5 @@ int main(void)
      *
      * x2,y2,z2 all returned zero because integers always round the numbers and the decimal is truncated
      */
+    return 0;
 }
