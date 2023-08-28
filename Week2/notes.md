@@ -43,4 +43,9 @@ Unary Expressions
 
 
 Binary Expressions
-- 
+- Have a setup of operand-operator-operand
+-Examples include:
+    - Basic addition and subtraction: `x + y` or `x - y` Here x and y are the operands and the math symbol is the operator
+
+# Precedence
+    ![Alt text](image.png)
