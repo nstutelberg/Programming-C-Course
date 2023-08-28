@@ -48,4 +48,4 @@ Binary Expressions
     - Basic addition and subtraction: `x + y` or `x - y` Here x and y are the operands and the math symbol is the operator
 
 # Precedence
-    ![Alt text](image.png)
+    ![Alt text](pottebaum.JPG)
