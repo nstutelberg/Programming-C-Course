@@ -1,7 +1,7 @@
 // HW #01, Nolan Stutelberg
 #include <stdio.h>
 
-int main()
+int main(void)
 {
     char inputCharacter;
     int inputInteger;
@@ -19,6 +19,8 @@ int main()
     printf("%d\n", inputCharacter);
     printf("%d\n", inputInteger);
     printf("%f\n", inputFloat);
+
+    return 0;
 }
 
 /*
