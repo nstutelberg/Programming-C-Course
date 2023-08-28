@@ -18,21 +18,29 @@
 # Types of Expressions
 Primary Expressions
 - These only have one operand with no operator. Like `A` or like `3.14`. These are just items that aren't having any operations executed on them
+
+
 Postfix Expressions
 - Have one operand followed by one operator
 - Examples include:
     - Incrementing: `i++;` Because the ++ is incrementing the variable i
     - Function calls: `addNumbers();` The function name is the operand and the parentheses is the operator since the parentheses are doing something to the word
     - Decrementing: `i--;` Because the -- is decrementing the variable i
+
+
 Prefix Expressions
 - having the operator go first then the operand after
 - different thatn postfix operators because in this case, the operation takes place before the expression that contains the operator is evaluated
 - Examples include:
     - Prefix increment and prefix decrement: `++i` and `--i`. These are used to add or subtract one from a variable.
+
+
 Unary Expressions
 - has one operator and one operand, and the operator comes before the operand
 - Examples include:
     - converting values to other data types (casting): `(int) x` or `(int) 3.4`
     - basic plus and minus: `... + x` or `... - x`, where it is the operator and then operand
+
+
 Binary Expressions
 - 
