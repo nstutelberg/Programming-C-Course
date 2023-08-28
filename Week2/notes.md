@@ -48,4 +48,10 @@ Binary Expressions
     - Basic addition and subtraction: `x + y` or `x - y` Here x and y are the operands and the math symbol is the operator
 
 # Precedence
-    ![Alt text](pottebaum.JPG)
+- Operators have an order of which they execute, and you can refer to a list of precedence
+- For example, `&&` comes before `||` in if/or statements. You can use parentheses to be same. 
+
+# Associativity
+- Associativity in programming refers to the order in which operations of the same precedence are performed when they appear consecutively in an expression. It determines whether operations are evaluated from left to right or from right to left
+- left-to-right: `3 * 8 / 4 % 4 * 5` -> `((((3 * 8) / 4) % 4) * 5)` This goes from left to right because every operation in here has the same precedence
+- right-to-left: `a += b *= c -= 5` -> `(a += (b *= (c -=5)))` This goes from right to left because the operations on the right have higher precedence
