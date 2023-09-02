@@ -17,13 +17,13 @@ int main(void)
     while (validInput != 1)
     {
         printf("Enter the number of cups to be converted using a non-negative number with up to 2 decimal spaces (limit is 1000000) -> ");
-        if (scanf("%lf", &userCupValue) == 1 && userCupValue < 1000000)
+        if (scanf("%lf", &userCupValue) == 1 && userCupValue < 1000000 && userCupValue >= 0)
         {
             validInput = 1;
         }
         else
         {
-            printf("\nInvalid input. We all know you don't have a million cups of flour anyway. ");
+            printf("\nInvalid input. ");
             while (getchar() != '\n')
                 ;
         }
@@ -49,9 +49,11 @@ int main(void)
 
 HW #02, Nolan Stutelberg
 
-Enter the number of cups to be converted using a non-negative number with up to 2 decimal spaces (limit is 1000000) -> 1102102910921029
+Enter the number of cups to be converted using a non-negative number with up to 2 decimal spaces (limit is 1000000) -> 99281982198
 
-Invalid input. We all know you don't have a million cups of flour anyway. Enter the number of cups to be converted using a non-negative number with up to 2 decimal spaces (limit is 1000000) -> 3.20
+Invalid input. Enter the number of cups to be converted using a non-negative number with up to 2 decimal spaces (limit is 1000000) -> -73
+
+Invalid input. Enter the number of cups to be converted using a non-negative number with up to 2 decimal spaces (limit is 1000000) -> 3.2
       3.20 cups =        1.600 pints
                 =       25.600 ounces
                 =       51.200 tablespoons
