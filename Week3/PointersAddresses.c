@@ -23,22 +23,21 @@ int main(void)
     double inputDouble;
 
     /**
-     * The `&` is accessing the addresses of the variables, so when the helper function scans in the data and has the `*` to use the address, then in the helper, the memory address
-     * gets populated with the value of what was scanned. So after calling the `getInteger` and `getTwoFloatingValues` functions, lines 21 to 23 will have values in their addresses
-     * and they can be accessed normally with no pointer.
-     * The use of `int getInteger(int *inputInt)` function is to place the scanned integer value at the address of *inputInt, and then you use `&inputInt` to point to that memory location.
-     * After the `getInteger` function is called, if you printed `&inputInt` it would return an address (random collection of letters and numbers). If after you call the function, you printed `inputInt`,
-     * then the actual value would be printed, since earlier in the code, we pointed to the memory location with `&inputInt`, so within the scope of the function, C remembers what the address is, and what value
-     * is stored at that address. When you call inputInt, C will try to pull the value from that address. But say you called inputInt after it was initialized but before running through the `getInteger` function,
-     * you would get some random numbers that were chilling in the memory location already, and you would not get the actual value that you want.
-     * `&inputInt` is the actual memory address hash value, so you have to use the pointer in the function call, because if you just did `inputInt`, it would be an empty initialized variable.
-     * When you use the pointer in main with the function call `getInteger(&inputInt);`, this is the first and only time you need to use the pointer from within the scope of the main function. Since the `getInteger()`
-     * function is assigning the scanned integer value to the memory location of inputInt, you need to do &inputInt for C to know what value is stored at that address, then you can use inputInt without pointers thereafter
+     * The `&` is accessing the addresses of the variables, so when the helper function scans in the data and has the `*` to use the address, then the variables are assigned the value of what was scanned.
+     * So after these 2 below lines, lines 21 to 23 will have values in their addresses and they can be accessed normally with no pointer.
+     * The use of `int getInteger(int *inputInt)` is to place the scanned integer value at the address of *inputInt, and the use of `&inputInt` is to point to the value at the address
+     * This way, C knows that when you call inputInt, that there is a value tied to it. Since when you initialize the variable, the type is known, but the address is empty
+     *  `&inputInt` is the actual memory address hash value, so you have to use the pointer in the function call, because if you just did `inputInt`, it would be an empty initialized variable
+     * When you use the pointer here, you are saying that in the `getInteger` function, that the value at the address location will be modified
+     * `*` is used to access the value stored at a memory address (when used with a pointer) - `&` is used to obtain the memory address of a variable.
      */
-
+    printf("test 1: %p", &inputInt);
+    printf("test 2: %d", inputInt);
     int intReadFlag = getInteger(&inputInt);
-    int intReadFlag2 = getInteger(inputInt);
     int floatReadFlag = getTwoFloatingValues(&inputFloat, &inputDouble);
+
+    printf("test 3: %d", inputInt);
+    printf("test 4: %p", &inputInt);
 
     printf("The user entered %d integer(s) and %d floating point number(s)\n", intReadFlag, floatReadFlag);
     printf("The user entered: ");
@@ -55,8 +54,8 @@ int getInteger(int *inputInt)
     // Since the parameter declaration used the address operator (*), this scanf is modifying the value of inputInt at its memory location. So then you can use &inputInt later to point to that memory location.
     // And when you point to that location later, there should be the integer value there, but C will print the actual address, and not the value.
     // And to access the actual value in the main function, you have to first point to the memory location, then you can access the value freely without a pointer
-    int result = scanf("%d", inputInt);
-    return result;
+    *inputInt = 10;
+    return 0;
 }
 
 int getTwoFloatingValues(float *inputFloat, double *inputDouble)
