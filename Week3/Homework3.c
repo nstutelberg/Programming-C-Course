@@ -28,7 +28,7 @@ int main(void)
     printf("The user entered %d integer(s) and %d floating point number(s)\n", intReadFlag, floatReadFlag);
     printf("The user entered: ");
     printValues(inputInt, inputFloat, inputDouble);
-    printf("\nbye");
+    printf("\nBye! Caio");
 
     return 0;
 }
@@ -45,6 +45,8 @@ int getInteger(int *pNum)
 int getTwoFloatingValues(float *pfVal, double *pdVal)
 {
     printf("Please enter two floating point numbers -> ");
+
+    // Reading in one value as a float and storing it as a float, and reading in the other value as a double and storing it as a double for consistency
     int result = scanf("%f %lf", pfVal, pdVal);
     return result;
 }
