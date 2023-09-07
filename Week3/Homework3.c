@@ -1,16 +1,18 @@
-// questions - check the reading in of the float values. do i read in the float and have implicit conversion convert it to double? or do i keep the data types consistent?
+// Question - The homework description said to read in two float values. Do I read in the float and have implicit conversion convert it to double? or do i keep the data types consistent?
 
 // HW #03, Nolan Stutelberg
 #include <stdio.h>
 
 /**
+ * Homework Info:
+ *
  * I renamed the function names to not use numbers in them, and to use camel case. I generally only use pascal case with classes, and find using numbers in functions/methods is not as clear.
  * I also renamed the parameter names and the initialized variables in the main function to keep consistency between all the functions, and to give more traceability in the code
+ * You can expand or collapse the extra long comments. I wanted to keep them so I can look back on my homework and re-read my thought process
  */
 
 // Declaring function prototypes. Address variables are needed for the first two functions because these functions will ahve their values read and modified in the main function
 // The printValues function is just being called in the main function directly, so a pointer is not needed
-
 int getInteger(int *inputInt);
 int getTwoFloatingValues(float *inputFloat, double *inputDouble);
 int printValues(int inputInt, float inputFloat, double inputDouble);
@@ -23,6 +25,8 @@ int main(void)
     double inputDouble;
 
     /**
+     * Pointer explanation for me only...
+     *
      * The `&` is accessing the addresses of the variables, so when the helper function scans in the data and has the `*` to use the address, then in the helper, the memory address
      * gets populated with the value of what was scanned. So after calling the `getInteger` and `getTwoFloatingValues` functions, lines 21 to 23 will have values in their addresses
      * and they can be accessed normally with no pointer.
@@ -37,7 +41,6 @@ int main(void)
      */
 
     int intReadFlag = getInteger(&inputInt);
-    int intReadFlag2 = getInteger(inputInt);
     int floatReadFlag = getTwoFloatingValues(&inputFloat, &inputDouble);
 
     printf("The user entered %d integer(s) and %d floating point number(s)\n", intReadFlag, floatReadFlag);
@@ -52,9 +55,12 @@ int getInteger(int *inputInt)
 {
     printf("Please enter an integer value -> ");
 
-    // Since the parameter declaration used the address operator (*), this scanf is modifying the value of inputInt at its memory location. So then you can use &inputInt later to point to that memory location.
-    // And when you point to that location later, there should be the integer value there, but C will print the actual address, and not the value.
-    // And to access the actual value in the main function, you have to first point to the memory location, then you can access the value freely without a pointer
+    /**
+     * Since the parameter declaration used the address operator (*), this scanf is modifying the value of inputInt at its memory location. So then you can use &inputInt later to point to that memory location. And when you point to
+     * that location later, there should be the integer value there, but C will print the actual address, and not the value. And to access the actual value in the main function, you have to first point to the memory location, then
+     * you can access the value freely without a pointer. Since the parameter declaration used the address operator (*), this scanf is modifying the value of inputInt at its memory location. So then you can use &inputInt later to point
+     *  to that memory location. The parameter `int *inputInt` is saying that the function requires a memory address as an input argument when you call the function, or else you will get a mismatched type if you try to pass an actual value into this function
+     */
     int result = scanf("%d", inputInt);
     return result;
 }
@@ -70,6 +76,7 @@ int getTwoFloatingValues(float *inputFloat, double *inputDouble)
 
 int printValues(int inputInt, float inputFloat, double inputDouble)
 {
+    // No address variables are needed here because the variables will not be modified anywhere in the program
     printf("%d, %g, %g", inputInt, inputFloat, inputDouble);
     return 0;
 }

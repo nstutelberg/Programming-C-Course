@@ -3,6 +3,7 @@
 
 int main(void)
 {
+
     char inputCharacter;
     int inputInteger;
     float inputFloat;
@@ -21,6 +22,13 @@ int main(void)
     printf("%f\n", inputFloat);
 
     return 0;
+}
+
+char stringReturner(myString)
+{
+    char myString2;
+    myString2 = myString + "hello";
+    return myString2;
 }
 
 /*
