@@ -1,5 +1,3 @@
-// Question - The homework description said to read in two float values. Do I read in the float and have implicit conversion convert it to double? or do i keep the data types consistent?
-
 // HW #03, Nolan Stutelberg
 #include <stdio.h>
 
@@ -13,8 +11,8 @@
 
 // Declaring function prototypes. Address variables are needed for the first two functions because these functions will ahve their values read and modified in the main function
 // The printValues function is just being called in the main function directly, so a pointer is not needed
-int getInteger(int *inputInt);
-int getTwoFloatingValues(float *inputFloat, double *inputDouble);
+int getInteger(int *pInputInt);
+int getTwoFloatingValues(float *pInputFloat, double *pInputDouble);
 int printValues(int inputInt, float inputFloat, double inputDouble);
 
 int main(void)
@@ -51,26 +49,27 @@ int main(void)
     return 0;
 }
 
-int getInteger(int *inputInt)
+int getInteger(int *pInputInt)
 {
     printf("Please enter an integer value -> ");
 
     /**
      * Since the parameter declaration used the address operator (*), this scanf is modifying the value of inputInt at its memory location. So then you can use &inputInt later to point to that memory location. And when you point to
-     * that location later, there should be the integer value there, but C will print the actual address, and not the value. And to access the actual value in the main function, you have to first point to the memory location, then
-     * you can access the value freely without a pointer. Since the parameter declaration used the address operator (*), this scanf is modifying the value of inputInt at its memory location. So then you can use &inputInt later to point
-     *  to that memory location. The parameter `int *inputInt` is saying that the function requires a memory address as an input argument when you call the function, or else you will get a mismatched type if you try to pass an actual value into this function
+     * that location later, there should be the integer value there, but C will print the actual address, and not the value. To access the actual value in the main function, you have to first point to the memory location, then
+     * you can access the value freely just by calling the variable name. Since the indirection operator is used, this scanf is modifying the value of inputInt at its memory location. So then you can use &inputInt later to point
+     *  to that memory location. The parameter `int *pInputInt` is saying that the function requires a memory address as an input argument when you call the function, or else you will get a mismatched type if you try to pass an actual value into this function
      */
-    int result = scanf("%d", inputInt);
+    int result = scanf("%d", pInputInt);
     return result;
 }
 
-int getTwoFloatingValues(float *inputFloat, double *inputDouble)
+int getTwoFloatingValues(float *pInputFloat, double *pInputDouble)
 {
     printf("Please enter two floating point numbers -> ");
 
     // Reading in one value as a float and storing it as a float, and reading in the other value as a double and storing it as a double for consistency
-    int result = scanf("%f %lf", inputFloat, inputDouble);
+    // Don't need a pointer because the input parameter specifies that the argument will be an address,and not a value. So the scanf function will apply the value right to the address of the variable
+    int result = scanf("%f %lf", pInputFloat, pInputDouble);
     return result;
 }
 
