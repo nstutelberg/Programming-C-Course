@@ -12,7 +12,7 @@
 
 // Function prototypes
 int *createArray();
-void printArray(const int *array);
+void printArray(const int *array, int size);
 void printOddValues(const int *array);
 void printOddIndexValues(const int *array);
 int countEvenValues(const int *array);
@@ -32,31 +32,39 @@ int main()
     // Since we are using dynamically created arrays, we can skip the initialization that we had to do in the last homework -> (int myArray[ARY_SIZE], positiveArray[ARY_SIZE], negativeArray[ARY_SIZE];)
     int *myArray = createArray();
 
-    printf("The entire array: \n");
-    printArray(myArray);
+    if (myArray)
+    {
+        printf("The entire array: \n");
+        printArray(myArray, ARY_SIZE);
 
-    printf("\nOdd values in the array:\n");
-    printOddValues(myArray);
+        printf("\nOdd values in the array:\n");
+        printOddValues(myArray);
 
-    printf("\n\nNumbers located at odd indexes:\n");
-    printOddIndexValues(myArray);
+        printf("\n\nNumbers located at odd indexes:\n");
+        printOddIndexValues(myArray);
 
-    printf("\nNumber of even numbers in the array: %d\n", countEvenValues(myArray));
-    printf("Sum of the array: %d\n", sumValues(myArray));
-    printf("Smallest value in array at index %d: %d\n", smallestValue(myArray), myArray[smallestValue(myArray)]);
-    printf("Largest value in array at index %d: %d\n", largestValue(myArray), myArray[largestValue(myArray)]);
+        printf("\nNumber of even numbers in the array: %d\n", countEvenValues(myArray));
+        printf("Sum of the array: %d\n", sumValues(myArray));
+        printf("Smallest value in array at index %d: %d\n", smallestValue(myArray), myArray[smallestValue(myArray)]);
+        printf("Largest value in array at index %d: %d\n", largestValue(myArray), myArray[largestValue(myArray)]);
 
-    printf("\nPositive values in the array are:\n");
-    positiveValsArray(myArray);
+        printf("\nPositive values in the array are:\n");
+        positiveValsArray(myArray);
 
-    printf("\n\nNegative values in the array are:\n");
-    negativeValsArray(myArray);
+        printf("\n\nNegative values in the array are:\n");
+        negativeValsArray(myArray);
 
-    // After dynamically allocating an array or allocating any memory, it is a good idea to free it so that the memory in use from malloc can be released. If you don't you might take up all the heap space
-    // and cause a memory leak
-    free(myArray);
+        // After dynamically allocating an array or allocating any memory, it is a good idea to free it so that the memory in use from malloc can be released. If you don't you might take up all the heap space
+        // and cause a memory leak
+        free(myArray);
 
-    return 0;
+        return 0;
+    }
+    else
+    {
+        printf("Error in allocating the memory to the array. Exiting the program");
+        return -1;
+    }
 }
 
 int *createArray()
@@ -64,13 +72,14 @@ int *createArray()
     // After this code, array is now pointing to the block of memory where the heap is located. Heaps are for dynamic allocation the size of the array can be resized
     int *array = malloc(ARY_SIZE * sizeof(int));
 
-    // Only execute the code if the array was allocated correctly. Else return -1
+    // Only execute the code if the array was allocated correctly. Else return NULL
     if (array)
     {
         int *idxP = array;
+        const int *endOfArray = array + ARY_SIZE;
 
         // Nothing needs to be initialized because idxP is already pointing to the start of the array, and you have to do `array + ARY_SIZE` to get the memory location of the last element of the array
-        for (; idxP < array + ARY_SIZE; idxP++)
+        for (; idxP < endOfArray; idxP++)
         {
             *idxP = rand() % (HIGH_LIMIT - LOW_LIMIT + 1) + LOW_LIMIT;
             if (*idxP % NEGMULT1 == 0 || *idxP % NEGMULT2 == 0)
@@ -84,24 +93,22 @@ int *createArray()
     return NULL;
 }
 
-void printArray(const int *array)
+void printArray(const int *array, int size)
 {
     // Same process below as HW8, except that we are accessing the elements of the array using a pointer that points to each subsequent memory address as the loop progresses
     const int *idxP = array;
-    int lineCount = 0;
+    int count = 0;
+    const int *endOfArray = array + size;
 
-    // The check for *idxP being zero is for the negative and positive value arrays. I didn't want the memory locations to be inserted in the array, so I first initialized all values of the array to 0 first.
-    // Then the loop will populate the array with only values, not memory locations. We don't want to print all the trailing zeros, so this condition stops printing when a zero is encountered
-    //(since 0s are not in the value range)
-    for (; idxP < array + ARY_SIZE && *idxP != 0; idxP++)
+    for (; idxP < endOfArray; idxP++)
     {
         printf("%4d ", *idxP);
-        lineCount++;
+        count++;
 
-        if (lineCount == NPERLINE)
+        if (count == NPERLINE)
         {
             printf("\n");
-            lineCount = 0;
+            count = 0;
         }
     }
 }
@@ -111,8 +118,9 @@ void printOddValues(const int *array)
     // Same process below as HW8, just accessing elements with pointer
     const int *idxP = array;
     int count = 0;
+    const int *endOfArray = array + ARY_SIZE;
 
-    for (; idxP < array + ARY_SIZE; idxP++)
+    for (; idxP < endOfArray; idxP++)
     {
         if (*idxP % 2 != 0)
         {
@@ -128,12 +136,14 @@ void printOddIndexValues(const int *array)
 {
     // Same process below as HW8, just accessing elements with pointer
     const int *idxP = array + 1;
-    int numCounter = 0;
-    for (; idxP < array + ARY_SIZE; idxP += 2)
+    int count = 0;
+    const int *endOfArray = array + ARY_SIZE;
+
+    for (; idxP < endOfArray; idxP += 2)
     {
         printf("%4d ", *idxP);
-        numCounter++;
-        if (numCounter % NPERLINE == 0)
+        count++;
+        if (count % NPERLINE == 0)
             printf("\n");
     }
 }
@@ -143,7 +153,9 @@ int countEvenValues(const int *array)
     // Same process below as HW8, just accessing elements with pointer
     const int *idxP = array;
     int count = 0;
-    for (; idxP < array + ARY_SIZE; idxP++)
+    const int *endOfArray = array + ARY_SIZE;
+
+    for (; idxP < endOfArray; idxP++)
     {
         if (*idxP % 2 == 0)
             count++;
@@ -156,7 +168,9 @@ int sumValues(const int *array)
     // Same process below as HW8, just accessing elements with pointer
     const int *idxP = array;
     int sum = 0;
-    for (; idxP < array + ARY_SIZE; idxP++)
+    const int *endOfArray = array + ARY_SIZE;
+
+    for (; idxP < endOfArray; idxP++)
     {
         sum += *idxP;
     }
@@ -169,7 +183,9 @@ int smallestValue(const int *array)
     // If the value of idxP is smaller, it replaces minidxP.
     const int *idxP = array;
     const int *minidxP = idxP;
-    for (; idxP < array + ARY_SIZE; idxP++)
+    const int *endOfArray = array + ARY_SIZE;
+
+    for (; idxP < endOfArray; idxP++)
     {
         if (*idxP < *minidxP)
             minidxP = idxP;
@@ -185,7 +201,9 @@ int largestValue(const int *array)
     // Similar process as above
     const int *idxP = array;
     const int *maxidxP = idxP;
-    for (; idxP < array + ARY_SIZE; idxP++)
+    const int *endOfArray = array + ARY_SIZE;
+
+    for (; idxP < endOfArray; idxP++)
     {
         if (*idxP > *maxidxP)
             maxidxP = idxP;
@@ -195,22 +213,25 @@ int largestValue(const int *array)
 
 void positiveValsArray(const int *array)
 {
-    int *newArray = malloc(ARY_SIZE * sizeof(int));
+
+    // Find the amount of positive numbers in the array before creating the new array, so the size is correct
+    const int *idxP = array;
+    const int *endOfArray = array + ARY_SIZE;
+    int posCounter = 0;
+    for (; idxP < endOfArray; idxP++)
+    {
+        if (*idxP > 0)
+            posCounter++;
+    }
+
+    int *newArray = malloc(posCounter * sizeof(int));
     if (newArray)
     {
         const int *idxP1 = array;
         int *idxP2 = newArray;
+        const int *endOfArray = array + ARY_SIZE;
 
-        // Fixing an issue from last homework where memory addresses would populate the array. We want to initialize all elements of the array to 0 first so memory locations are not included in the array
-        for (; idxP2 < newArray + ARY_SIZE; idxP2++)
-        {
-            *idxP2 = 0;
-        }
-
-        // Reset idxP2 to the start of the memory block of the array so values can be inserted starting from the first slot
-        idxP2 = newArray;
-
-        for (; idxP1 < array + ARY_SIZE; idxP1++)
+        for (; idxP1 < endOfArray; idxP1++)
         {
             if (*idxP1 > 0)
             {
@@ -221,7 +242,7 @@ void positiveValsArray(const int *array)
             }
         }
 
-        printArray(newArray);
+        printArray(newArray, posCounter);
         free(newArray);
     }
 }
@@ -229,23 +250,25 @@ void positiveValsArray(const int *array)
 void negativeValsArray(const int *array)
 {
 
+    // Find the amount of positive numbers in the array before creating the new array, so the size is correct
+    const int *idxP = array;
+    const int *endOfArray = array + ARY_SIZE;
+    int negCounter = 0;
+    for (; idxP < endOfArray; idxP++)
+    {
+        if (*idxP < 0)
+            negCounter++;
+    }
+
     // Same idea as above
-    int *newArray = malloc(ARY_SIZE * sizeof(int));
+    int *newArray = malloc(negCounter * sizeof(int));
     if (newArray)
     {
         const int *idxP1 = array;
         int *idxP2 = newArray;
+        const int *endOfArray = array + ARY_SIZE;
 
-        // Fixing the same issue as with positiveValsArray
-        for (; idxP2 < newArray + ARY_SIZE; idxP2++)
-        {
-            *idxP2 = 0;
-        }
-
-        // Reset idxP2 to the start of the memory block
-        idxP2 = newArray;
-
-        for (; idxP1 < array + ARY_SIZE; idxP1++)
+        for (; idxP1 < endOfArray; idxP1++)
         {
             if (*idxP1 < 0)
             {
@@ -254,7 +277,7 @@ void negativeValsArray(const int *array)
             }
         }
 
-        printArray(newArray);
+        printArray(newArray, negCounter);
         free(newArray);
     }
 }
@@ -263,48 +286,49 @@ void negativeValsArray(const int *array)
 Homework #9: Nolan Stutelberg
 
 The entire array:
--732 -329  -24  209  -72 -552  542  967 -423  502
--207  829  464 -518  697  -66 -651  206 -279  -45
- 191  419 -942  713 -279 -864  118 -561  118  520
--687  268  262 -327  232 -288  787  758 -819  958
- 640 -492   79 -600 -858  625  268 -792  625 -438
--875   85 -245  944   68 -750  194 -252  916  799
- 358  148  127 -300  379 -952  790 -417  646  253
- 692 -791  254  130  494  292  638  143  116  163
-  34  -57 -648 -597 -477  548  316  344 -858 -333
- 613  794  172  716 -749  359  683 -204  907 -771
+ -77  464 -267 -267  527  296  370 -129  349  689
+ 382 -413 -666  830  479  964  -45  722 -138  323
+ 341 -765  860  268  580  803  754  758  824  227
+ 311  715  334 -384  290 -852 -366 -700 -453    5
+ 311 -147  442  142  916  883  773  139 -306  892
+-225 -489  533  236  568    2 -573  953 -369 -915
+ 505  239  575  236 -786  496 -813  331 -162 -539
+-726  -21  911 -117 -686 -156 -791 -414  977 -351
+ 563  953  607  254   58 -112  253 -615 -882  484
+ -70 -957  514  715 -889   76  -90 -231  335 -798
 
 Odd values in the array:
--329  209  967 -423 -207  829  697 -651 -279  -45
- 191  419  713 -279 -561 -687 -327  787 -819   79
- 625  625 -875   85 -245  799  127  379 -417  253
--791  143  163  -57 -597 -477 -333  613 -749  359
- 683  907 -771
+ -77 -267 -267  527 -129  349  689 -413  479  -45
+ 323  341 -765  803  227  311  715 -453    5  311
+-147  883  773  139 -225 -489  533 -573  953 -369
+-915  505  239  575 -813  331 -539  -21  911 -117
+-791  977 -351  563  953  607  253 -615 -957  715
+-889 -231  335
 
 Numbers located at odd indexes:
--329  209 -552  967  502  829 -518  -66  206  -45
- 419  713 -864 -561  520  268 -327 -288  758  958
--492 -600  625 -792 -438   85  944 -750 -252  799
- 148 -300 -952 -417  253 -791  130  292  143  163
- -57 -597  548  344 -333  794  716  359 -204 -771
+ 464 -267  296 -129  689 -413  830  964  722  323
+-765  268  803  758  227  715 -384 -852 -700    5
+-147  142  883  139  892 -489  236    2  953 -915
+ 239  236  496  331 -539  -21 -117 -156 -414 -351
+ 953  254 -112 -615  484 -957  715   76 -231 -798
 
-Number of even numbers in the array: 57
-Sum of the array: 4991
-Smallest value in array at index 65: -952
-Largest value in array at index 7: 967
+Number of even numbers in the array: 47
+Sum of the array: 10585
+Smallest value in array at index 91: -957
+Largest value in array at index 78: 977
 
 Positive values in the array are:
- 209  542  967  502  829  464  697  206  191  419
- 713  118  118  520  268  262  232  787  758  958
- 640   79  625  268  625   85  944   68  194  916
- 799  358  148  127  379  790  646  253  692  254
- 130  494  292  638  143  116  163   34  548  316
- 344  613  794  172  716  359  683  907
+ 464  527  296  370  349  689  382  830  479  964
+ 722  323  341  860  268  580  803  754  758  824
+ 227  311  715  334  290    5  311  442  142  916
+ 883  773  139  892  533  236  568    2  953  505
+ 239  575  236  496  331  911  977  563  953  607
+ 254   58  253  484  514  715   76  335
 
 Negative values in the array are:
--732 -329  -24  -72 -552 -423 -207 -518  -66 -651
--279  -45 -942 -279 -864 -561 -687 -327 -288 -819
--492 -600 -858 -792 -438 -875 -245 -750 -252 -300
--952 -417 -791  -57 -648 -597 -477 -858 -333 -749
--204 -771
+ -77 -267 -267 -129 -413 -666  -45 -138 -765 -384
+-852 -366 -700 -453 -147 -306 -225 -489 -573 -369
+-915 -786 -813 -162 -539 -726  -21 -117 -686 -156
+-791 -414 -351 -112 -615 -882  -70 -957 -889  -90
+-231 -798
 */
