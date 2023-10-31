@@ -1,3 +1,4 @@
+// HW #10, Nolan Stutelberg
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -44,10 +45,16 @@ int main()
         dblArray[i] = createDataset(nPts);
     }
 
-    // Setting the final value of the dataset to a NULL pointer so we can know where the end of the array is. There is at maximum 10 sets printed (0-9), with set #10 always being NULL
-    dblArray[nSets] = NULL;
+    // Setting the final value of the dataset to a NULL pointer so we can know where the end of the array is.
+    // There is at maximum 10 sets printed (0-9). Previously I didn't have the if statement, so I was getting out of bounds behavior when there were 10 sets
+    if (nSets < MAX_SETS)
+    {
+        dblArray[nSets] = NULL;
+    }
 
-    for (int i = 0; dblArray[i] != NULL; i++)
+    // Fix the segmentation fault by avoiding accessing memory that has not been initialized yet
+    // These loop conditions make sure that the loop is bound to the number of datasets that should be printed
+    for (int i = 0; i < nSets && dblArray[i] != NULL; i++)
     {
         int nPts = getNumPts();
         double avg = average(dblArray[i], nPts);
@@ -66,7 +73,7 @@ int main()
     }
 
     // After printing the data, making sure to free the memory of each array that was generated through the createDataset function
-    for (int i = 0; dblArray[i] != NULL; i++)
+    for (int i = 0; i < nSets && dblArray[i] != NULL; i++)
     {
         free(dblArray[i]);
     }
@@ -78,6 +85,7 @@ void underscorePrinter(int numUnderscores)
 {
     // Instead of looping for how many underscores to print, I set a max of 9 underscores to print at each call of the function. With 4 columns, 9 underscores is the perfect width
     // There needs to be sufficient underscores to populate the print statement in the case of getNumStartEndPts returning 4, so with this logic, there will always be enough underscores
+    // Need the `.` in order to give the precision as an argument to the printf function. If you take out the ., the spacing will be broken if you try it out
     printf("%.*s", numUnderscores, "_________");
 }
 
@@ -98,41 +106,49 @@ int getNumPts()
 
 double *createDataset(int n)
 {
-    double *dblArray = malloc(n * sizeof(double));
+    double *dblArray = (double *)malloc(n * sizeof(double));
 
-    for (int i = 0; i < n; i++)
+    if (dblArray)
     {
-        // Populate the array with values ranging from 0 to 10 inclusive
-        dblArray[i] = rand() * 10.0 / RAND_MAX;
-    }
+        double *end = dblArray + n;
+        double *current = dblArray;
 
+        for (; current < end; current++)
+        {
+            // Populate the array with values ranging from 0 to 10 inclusive
+            *current = rand() * 10.0 / RAND_MAX;
+        }
+    }
     return dblArray;
 }
 
 void sortArray(double *pArray, int n)
 {
+    double *end = pArray + n;
     // Perform the selcetion sort algorithm to sort in asc order. This algorithm has O(n^2) time complexity and I believe the only way to improve the run time further would be to use a different sorting method
-    for (int i = 0; i < n - 1; i++)
+    for (double *i = pArray; i < end - 1; i++)
     {
-        int minIdx = i;
-        for (int j = i + 1; j < n; j++)
-            if (pArray[j] < pArray[minIdx])
-                minIdx = j;
+        double *pMinIdx = i;
+        for (double *j = i + 1; j < end; j++)
+            if (*j < *pMinIdx)
+                pMinIdx = j;
 
-        // Use the temp variable so you can swap pArray[minIdx] and pArray[i] and place the next smallest value just to the right of the current smallest value in the array
-        double temp = pArray[minIdx];
-        pArray[minIdx] = pArray[i];
-        pArray[i] = temp;
+        // Use the temp variable so you can swap min index and current element and place the next smallest value just to the right of the current smallest value in the array
+        double temp = *pMinIdx;
+        *pMinIdx = *i;
+        *i = temp;
     }
 }
 
 double average(double *pArray, int n)
 {
     double sum = 0;
+    // Pointer to one past the end of the array
+    double *pEnd = pArray + n;
 
-    for (int i = 0; i < n; i++)
+    for (double *p = pArray; p < pEnd; p++)
     {
-        sum += pArray[i];
+        sum += *p;
     }
 
     return (sum / n);

@@ -22,7 +22,7 @@ int main(void)
     p = &x;
     printf("%d", *p);
 
-    // can also do it this way, where you skip the intermediate step and
+    // can also do it this way, where you skip the intermediate step and say that the value of p2 should be whatever is in the address of x2, which we said was 20
     int x2 = 20;
     int *p2 = &x2;
     printf("\n%d", *p2);
