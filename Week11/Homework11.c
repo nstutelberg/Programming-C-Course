@@ -15,7 +15,7 @@ int main()
 
     while (userInput[0] != '\n')
     {
-        printf("Enter a string to search for matches, or enter a blank line to exit the program -> ");
+        printf("Enter a string to search for matches, or enter a blank line to exit the program -> \n");
         fgets(userInput, SIZE, stdin);
 
         // Getting the input length to reuse in various calculations, as to not get outOfBounds errors and clear input buffers
@@ -32,14 +32,14 @@ int main()
             // Notify the user that their input was truncated if they enter a string longer than SIZE
             if (inputLength == SIZE - 1)
             {
-                printf("Input truncated to %d characters -> %s\n\n", SIZE - 1, userInput);
+                printf("\nInput truncated to %d characters -> \n%s\n", SIZE - 1, userInput);
             }
 
             // Below is setting a temporary buffer for teh user input and setting it to 3, because 1 is for a character the user enters, one is for the end of the string (null terminator), and one is for the end of the string
             // This section of the code makes sure that the first character the user enters is used.. So you can enter `aousdhfiauoshf` as the targetChar, and only `a` will actually be used
             char targetChar;
             char tempBuffer[3];
-            printf("Enter character to search for -> ");
+            printf("\nEnter character to search for -> \n");
             fgets(tempBuffer, 3, stdin);
             targetChar = tempBuffer[0];
 
@@ -61,7 +61,7 @@ int main()
                     printf("%d ", matches[i]);
                 }
 
-                printf("and the positions in the string where matches were found are shown below \n%s", userInput);
+                printf("and the matches are shown below. \n\n%s", userInput);
 
                 if (inputLength == SIZE - 1)
                 {
@@ -94,15 +94,18 @@ int charIsAt(char *pStr, char ch, int loc[], int mLoc)
 {
     int count = 0;
 
+    // Fixed loop using this pointer to iterate over, making it faster than my previous method which was the same efficiency as array notation
+    char *pStartingVal = pStr;
+
     // Using `\0` as a way to determine where the end of the string is. Since the size of the string can vary, we need to check for this null terminator character to see when a blank line is encountered
     // Also checking for a new line character, so if the user hits Enter, then the loop will break as well
-    for (int i = 0; *(pStr + i) != '\0' && *(pStr + i) != '\n'; i++)
+    for (; *pStr != '\0' && *pStr != '\n'; pStr++)
     {
         // Starting at the beginning of the array and moving the pointer i positions forward each time, check if the current character matches the target character
         // Also the second condition is there to make sure that the program doesn't go out of bounds. This is making sure the max amount of matches you can have is the length of the array
-        if (*(pStr + i) == ch && count < mLoc)
+        if (*pStr == ch && count < mLoc)
         {
-            loc[count] = i;
+            loc[count] = pStr - pStartingVal;
             count++;
         }
     }
@@ -121,24 +124,47 @@ Sample output:
 
 HW #11, Nolan Stutelberg
 
-Enter a string to search for matches, or enter a blank line to exit the program -> hello prof pottebaum whats good
-Enter character to search for -> p
+Enter a string to search for matches, or enter a blank line to exit the program ->
+hello professor pottebaum whats good
 
-The character 'p' was found 2 time(s) in the word you inputted.
-The 2 matches are at the following index/indices-> 6 11 and the positions in the string where matches were found are shown below
-hello prof pottebaum whats good
-      ^    ^
+Enter character to search for ->
+s
 
-Enter a string to search for matches, or enter a blank line to exit the program -> thisisareallylongstringthatwillbetruncatedweeeeeeeeeeeeeeeeeeeeeeeeeee
-Input truncated to 40 characters -> thisisareallylongstringthatwillbetruncat
+The character 's' was found 3 time(s) in the word you inputted.
+The 3 matches are at the following index/indices-> 11 12 30 and the matches are shown below.
 
-Enter character to search for -> l
-
-The character 'l' was found 5 time(s) in the word you inputted.
-The 5 matches are at the following index/indices-> 10 11 13 29 30 and the positions in the string where matches were found are shown below
-thisisareallylongstringthatwillbetruncat
-          ^^ ^               ^^
+hello professor pottebaum whats good
+           ^^                 ^
 
 Enter a string to search for matches, or enter a blank line to exit the program ->
-PS C:\Users\nstut\git\Programming-C-Course\Week11>
+thisisareallylongtruncatedstringthatwillbetruncatedweeeeeeeeeeeeeeeeeeeeeeeeeeeee
+
+Input truncated to 40 characters ->
+thisisareallylongtruncatedstringthatwill
+
+Enter character to search for ->
+r
+
+The character 'r' was found 3 time(s) in the word you inputted.
+The 3 matches are at the following index/indices-> 7 18 28 and the matches are shown below.
+
+thisisareallylongtruncatedstringthatwill
+       ^          ^         ^
+
+Enter a string to search for matches, or enter a blank line to exit the program ->
+thishasalotofoncharlllllllllllllllllllllllllllll
+
+Input truncated to 40 characters ->
+thishasalotofoncharlllllllllllllllllllll
+
+Enter character to search for ->
+l
+
+The character 'l' was found 10 time(s) in the word you inputted.
+The 10 matches are at the following index/indices-> 8 19 20 21 22 23 24 25 26 27 and the matches are shown below.
+
+thishasalotofoncharlllllllllllllllllllll
+        ^          ^^^^^^^^^
+
+Enter a string to search for matches, or enter a blank line to exit the program ->
 */
