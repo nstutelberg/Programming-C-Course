@@ -33,31 +33,31 @@ int main()
         fseek(file, sizeof(DataSet) + sizeof(double) * firstDatasetSize, SEEK_SET);
 
         // Now read the second dataset
-        DataSet dataSet;
-        fread(&dataSet, sizeof(DataSet), 1, file);
+        DataSet myVLA;
+        fread(&myVLA, sizeof(DataSet), 1, file);
 
         // Allocate memory for data array and read in the dataset data
-        dataSet.dataArr = (double *)malloc(dataSet.numOfDoubles * sizeof(double));
-        fread(dataSet.dataArr, sizeof(double), dataSet.numOfDoubles, file);
+        myVLA.dataArr = (double *)malloc(myVLA.numOfDoubles * sizeof(double));
+        fread(myVLA.dataArr, sizeof(double), myVLA.numOfDoubles, file);
 
         double calculatedavgAllVals = 0;
-        for (int i = 0; i < dataSet.numOfDoubles; ++i)
+        for (int i = 0; i < myVLA.numOfDoubles; ++i)
         {
-            calculatedavgAllVals += dataSet.dataArr[i];
+            calculatedavgAllVals += myVLA.dataArr[i];
         }
-        calculatedavgAllVals /= dataSet.numOfDoubles;
+        calculatedavgAllVals /= myVLA.numOfDoubles;
 
         // Print all the results
         printf("Read from file: %s\n", fileName);
-        printf("Dataset #%d: %lu bytes\n", dataSet.dataSetNum, sizeof(DataSet) + sizeof(double) * dataSet.numOfDoubles);
-        printf("Number of Data Points: %d\n", dataSet.numOfDoubles);
-        printf("avgAllVals from file: %.4f\n", dataSet.avgAllVals);
+        printf("Dataset #%d: %lu bytes\n", myVLA.dataSetNum, sizeof(DataSet) + sizeof(double) * myVLA.numOfDoubles);
+        printf("Number of Data Points: %d\n", myVLA.numOfDoubles);
+        printf("avgAllVals from file: %.4f\n", myVLA.avgAllVals);
         printf("avgAllVals calculated: %.4f\n", calculatedavgAllVals);
-        printf("The averages are %s\n", (dataSet.avgAllVals == calculatedavgAllVals) ? "equal" : "not equal");
+        printf("The averages are %s\n", (myVLA.avgAllVals == calculatedavgAllVals) ? "equal" : "not equal");
 
         // Memory management to free the memory and close the file
         fclose(file);
-        free(dataSet.dataArr);
+        free(myVLA.dataArr);
     }
     return 0;
 }
