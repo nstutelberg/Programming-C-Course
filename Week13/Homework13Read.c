@@ -17,7 +17,6 @@ typedef struct
 
 FILE *openRdBinaryFile(char *fileName);
 
-// Main Function
 int main()
 {
     printf("HW #13, Nolan Stutelberg Part 2\n");
